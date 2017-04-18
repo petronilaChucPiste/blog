@@ -18,12 +18,11 @@ $app->get('/', function () use ($app) {
     return view('base');
 });
 
-$app->get('blog/public/partial/{resource}/{action}', function ($resource, $action) {
+$app->get('partials/{resource}/{action}', function ($resource, $action) {
 
-    return view("blog/public/partial/$resource/$action");
+    return view("partials/$resource/$action");
 
 });
-
 
 /**
  * Routes for resource client

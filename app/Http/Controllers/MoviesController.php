@@ -2,7 +2,7 @@
 
 class MoviesController extends Controller {
 
-    const MODEL = "App\Models\App\Movie";
+    const MODEL = "App\Models\Movie";
 
     use RESTActions;
 
