@@ -11,65 +11,61 @@
 |
 */
  use App\Models\Score;
+ use App\Models\Comments;
  use Illuminate\Http\Request;
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return view('base');
 });
 
-/*Create*/
+$app->get('blog/public/partial/{resource}/{action}', function ($resource, $action) {
 
-$app->post('/scores/new_score', function (Request $request) use ($app) {
-$new_score = new Score();
-$new_score-> name  = $request-> input ('name');
-$new_score-> points = $request -> input('points');
-if($new_score->save())
-{
-	return response()->json($new_score);
-}
-else
-{
-	return response()->json("OK");
-}
-
+    return view("blog/public/partial/$resource/$action");
 
 });
 
 
-/*read*/
+/**
+ * Routes for resource client
+ */
+$app->get('api/v1/client', 'ClientsController@all');
+$app->get('api/v1/client/{id}', 'ClientsController@get');
+$app->post('api/v1/client', 'ClientsController@add');
+$app->put('api/v1/client/{id}', 'ClientsController@put');
+$app->delete('api/v1/client/{id}', 'ClientsController@remove');
 
-$app->get('/scores', function () use ($app) {
-    return response()->json(Score::all());
-});
+/**
+ * Routes for resource director
+ */
+$app->get('api/v1/director', 'DirectorsController@all');
+$app->get('api/v1/director/{id}', 'DirectorsController@get');
+$app->post('api/v1/director', 'DirectorsController@add');
+$app->put('api/v1/director/{id}', 'DirectorsController@put');
+$app->delete('api/v1/director/{id}', 'DirectorsController@remove');
 
+/**
+ * Routes for resource genre
+ */
+$app->get('api/v1/genre', 'GenresController@all');
+$app->get('api/v1/genre/{id}', 'GenresController@get');
+$app->post('api/v1/genre', 'GenresController@add');
+$app->put('api/v1/genre/{id}', 'GenresController@put');
+$app->delete('api/v1/genre/{id}', 'GenresController@remove');
 
-/*update*/
-$app->post('/scores/update_score', function (Request $request) use ($app) {
+/**
+ * Routes for resource movie
+ */
+$app->get('api/v1/movie', 'MoviesController@all');
+$app->get('api/v1/movie/{id}', 'MoviesController@get');
+$app->post('api/v1/movie', 'MoviesController@add');
+$app->put('api/v1/movie/{id}', 'MoviesController@put');
+$app->delete('api/v1/movie/{id}', 'MoviesController@remove');
 
-$findObjet=Score::where('name','=',$request->('name'))->first();
-
-	if($findObjet != null)
-	{
-		$findObjet -> points = $request -> input(points);
-		$findObjet -> save();
-		return response()->json($findObjet);
-
-	}else{
-		return response()->json($findObjet);
-	}
-});
-
-/*delete*/
-$app->post('/scores/delete_score', function (Request $request) use ($app) {
-
-$findObjet = Score::where('name','=',$request->('name'))->first();
-
-	if($findObjet != null)
-	{
-		$findObjet -> delete();
-		return response()->json($findObjet);
-
-	}else{
-		return response()->json($findObjet);
-	}
-});
+/**
+ * Routes for resource rent
+ */
+$app->get('api/v1/rent', 'RentsController@all');
+$app->get('api/v1/rent/{id}', 'RentsController@get');
+$app->post('api/v1/rent', 'RentsController@add');
+$app->put('api/v1/rent/{id}', 'RentsController@put');
+$app->delete('api/v1/rent/{id}', 'RentsController@remove');
