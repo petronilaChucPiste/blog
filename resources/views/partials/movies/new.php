@@ -1,4 +1,4 @@
-<div ng-controller="directorsCtrl" ng-scope>
+<div ng-controller="moviesCtrl" ng-scope>
 
     <form class="form-horizontal" data-ng-init="getOptions()">
         <fieldset>
@@ -38,6 +38,7 @@
             </div>
             <!-- Button (Double) -->
             <div class="form-group">
+               <label class="col-md-4 control-label" for="button1id"></label>
                 <div class="col-md-8">
                     <button id="submit" class="btn btn-success" ng-click="movieSave();">Save</button>
                     <a class="btn btn-danger" onclick="highlightSearch()" ng-href="/movies">Cancel</a>

@@ -9,11 +9,10 @@ class Rent extends Model {
     protected $dates = [];
 
     public static $rules = [
-        "date_start" => "date,required",
-        "date_end" => "date,required",
-        "movie_id" => "required,numeric",
-        "client_id" => "required,numeric",
-        "returned" => "required",
+        "date_start" => "required|date",
+        "date_end" => "required|date",
+        "movie_id" => "required|numeric",
+        "client_id" => "required|numeric", 
         
     ];
 
@@ -21,12 +20,12 @@ class Rent extends Model {
 
     public function movie()
     {
-        return $this->belongsTo("App\Movie");
+        return $this->belongsTo("App\Models\Movie");
     }
 
     public function client()
     {
-        return $this->belongsTo("App\Client");
+        return $this->belongsTo("App\Models\Client");
     }
 
 

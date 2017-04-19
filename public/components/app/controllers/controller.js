@@ -299,8 +299,8 @@ va.controller('moviesCtrl', ['$scope', '$http', '$location', '$routeParams', '$r
 	}
 ]);
 
-va.controller('clientsCtrl', ['$scope', '$http', '$location', '$routeParams',
-	function($scope, $http, $location, $routeParams){
+va.controller('clientsCtrl', ['$scope', '$http', '$location', '$routeParams','$resource',
+	function($scope, $http, $location, $routeParams,$resource){
 
 		$scope.getClients = function(){
 			$http.get('/api/v1/client').success(function(response){
@@ -309,12 +309,12 @@ va.controller('clientsCtrl', ['$scope', '$http', '$location', '$routeParams',
 		}
 
 		$scope.clientSave = function() {
-			if($scope.clients === undefined ){
+			if($scope.client === undefined ){
 				alert("debe llenar todos los campos");
 			}
 			else {
 				var Client = $resource('/api/v1/client');
-				Client.save($scope.clients,
+				Client.save($scope.client,
 				function(response){
 					alert("Se guardó con exito");
 					$location.path('/clients');
@@ -333,7 +333,7 @@ va.controller('clientsCtrl', ['$scope', '$http', '$location', '$routeParams',
 			var client_id = $routeParams.client_id;
 			var clients = $resource('/api/v1/client/:id', { id : '@id'});
 			clients.get({id: client_id}, function(client, getResponseHeaders){
-				$scope.clients = client;
+				$scope.client = client;
 			});
 		}
 
@@ -360,13 +360,97 @@ va.controller('clientsCtrl', ['$scope', '$http', '$location', '$routeParams',
 		};
 	}
 ]);
-va.controller('rentsCtrl', ['$scope', '$http', '$location', '$routeParams',
-	function($scope, $http, $location, $routeParams){
-		
+va.controller('rentsCtrl', ['$scope', '$http', '$location', '$routeParams','$resource',
+	function($scope, $http, $location, $routeParams,$resource){
+		$scope.rent = {};
+
 		$scope.getRents = function(){
-			$http.get('/api/v1/rent').success(function(response){
+				$http.get('/api/v1/rent').success(function(response){
 				$scope.rents = response;
+				for (var i = $scope.rents.length - 1; i >= 0; i--) {
+					$http.get('/api/v1/movie/'+$scope.rents[i].movie_id).success(function(response){
+						for (var i = $scope.rents.length - 1; i >= 0; i--) {
+							if($scope.rents[i].movie_id == response.id){
+								$scope.rents[i].movie = response;
+							}
+						};
+					});
+					$http.get('/api/v1/client/'+$scope.rents[i].client_id).success(function(response){
+						for (var i = $scope.rents.length - 1; i >= 0; i--) {
+							if($scope.rents[i].client_id == response.id){
+								$scope.rents[i].client = response;
+							}
+						};
+					});
+				};
+			});
+			 
+		}
+
+
+
+		$scope.getOptions = function() {
+			$http.get('/api/v1/movie').success(function(response){
+				$scope.movies = response;
+			});
+			$http.get('/api/v1/client').success(function(response){
+				$scope.clients = response;
+			});
+		};
+
+			$scope.rentSave = function() {
+			if($scope.rent === undefined ){
+				alert("debe llenar todos los campos");
+			}
+			else {
+				var Rent = $resource('/api/v1/rent');
+				Rent.save($scope.rent,
+				function(response){
+					alert("Se guardó con exito");
+					$location.path('/rents');
+					highlightSearch(); //Highlights the menu of /resource list
+				},
+				function(response) {
+					alert("No se pudo guardar, complete todos los campos o espere un momento y vuelva a intentarlo.");
+					if(response.message != undefined){
+						alert(response.message);
+					}
+				});
+			}
+		};
+
+		$scope.getId = function() {
+			var rent_id = $routeParams.rent_id;
+			var rents = $resource('/api/v1/rent/:id', { id : '@id'});
+			rents.get({id: rent_id}, function(rent, getResponseHeaders){
+				$scope.rent = rent;
+				$scope.rent.date_start = new Date(rent.date_start);
+				$scope.rent.date_end = new Date(rent.date_end);
+
 			});
 		}
+
+
+
+		$scope.rentUpdate = function() {
+			if($scope.rent === undefined ){
+				alert("debe llenar todos los campos");
+			}
+			else {
+				var Rent = $resource('/api/v1/rent/:id', { id : '@id'}, { update: { method:'PUT' }});
+				Rent.update($scope.rent,
+				function(response){
+					alert("Se guardó con exito");
+					$location.path('/rents');
+					highlightSearch(); //Highlights the menu of /resource list
+				},
+				function(response) {
+					alert("No se pudo guardar, complete todos los campos o espere un momento y vuelva a intentarlo.");
+					if(response.message != undefined){
+						alert(response.message);
+					}
+				});
+			}
+		};
 	}
 ]);

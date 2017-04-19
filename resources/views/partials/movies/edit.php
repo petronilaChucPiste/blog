@@ -1,9 +1,9 @@
-<div ng-controller="directorsCtrl" ng-scope  data-ng-init="getId_()">
+<div ng-controller="moviesCtrl" ng-scope>
 
     <form class="form-horizontal" data-ng-init="getOptions()">
-        <fieldset>
+        <fieldset data-ng-init="getId_()">
             <!-- Form Name -->
-            <legend>Editar película</legend>
+            <legend>Editar Película</legend>
             <!-- Text input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="name">Nombre</label>
@@ -45,4 +45,5 @@
             </div>
         </fieldset>
     </form>
+
 </div>

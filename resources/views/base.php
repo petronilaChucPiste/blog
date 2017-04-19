@@ -100,17 +100,16 @@ code {
 								<a href="/genres/new" class="list-group-item">Nuevo</a>
 							</uib-accordion-group>
 						<!-- Rentas -->
-				    	<!-- 	<uib-accordion-group heading="Rentas">
+				     	<uib-accordion-group heading="Rentas">
 								<a href="/rents" class="list-group-item">Buscar</a>
 								<a href="/rents/new" class="list-group-item">Nuevo</a>
 							</uib-accordion-group>
-							clientes
+						 
 											    		<uib-accordion-group heading="Clientes">
 								<a href="/clients" class="list-group-item">Buscar</a>
 								<a href="/clients/new" class="list-group-item">Nuevo</a>
 							</uib-accordion-group>
- -->
-						</uib-accordion>
+ 						</uib-accordion>
 					</div><!-- fin menu panel -->
 					
 				</div> <!-- fin sidebar -->
